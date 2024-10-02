@@ -1,0 +1,31 @@
+// This is your Prisma schema file
+
+// Define the data source
+datasource db {
+  provider = "postgresql" // Use your specific database provider here
+  url      = env("DATABASE_URL") // Connection string from environment variable
+}
+
+// Define the generator for the Prisma Client
+generator client {
+  provider = "prisma-client-js" // Generates the Prisma Client in JavaScript
+}
+
+// Define your data model
+model User {
+  id        Int      @id @default(autoincrement()) // Primary key with auto-increment
+  name      String   @db.VarChar(255) // User's name with a character limit
+  email     String   @unique // User's email, must be unique
+  password  String // User's hashed password
+  createdAt DateTime @default(now()) // Timestamp for creation
+  updatedAt DateTime @updatedAt // Timestamp for last update
+}
+
+model Post {
+  id        Int      @id @default(autoincrement()) // Primary key
+  title     String   @db.VarChar(255) // Post title
+  content   String // Post content
+  authorId  Int // Foreign key to User
+  createdAt DateTime @default(now()) // Timestamp for creation
+  updatedAt DateTime @updatedAt // Timestamp for last update
+}
